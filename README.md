@@ -1,34 +1,23 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## About
 
-## Getting Started
+- yarn dev 명령어로 실행 후 http://localhost:3000 를 통해 접속 할 수 있습니다.
 
-First, run the development server:
+- https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api api 서버를 실행 후 기능이 정상 작동합니다.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+- 회원가입 시 토큰이 저장되어 바로 todoApp을 사용할 수 있습니다.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- 로그아웃 시에는 로그인 페이지로 이동합니다.
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+- TOdo 리스트에는 제목만 노출되며, 클릭 시 내용을 보고 수정할 수 있습니다.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+- redux-persist 를 설정, 로컬스토리지를 사용하여 새로고침 시에도 store의 값이 변하지 않도록 구현하였습니다.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+## Used Skill
 
-## Learn More
+- Next.js, typescript : router 기능과 타입 정의
 
-To learn more about Next.js, take a look at the following resources:
+- styled-components : 스타일 및 컴포넌트 정의
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- redux, redux-persist : 상태관리와 상태저장
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- eslint, prettier : 코드 컨벤션
