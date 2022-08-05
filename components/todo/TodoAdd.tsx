@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import * as T from 'lib/styles/todoStyle'
-import { change_input, insert } from 'lib/store/modules/todo.module';
-import { RootState } from 'lib/store/modules';
 import { AiOutlinePlus } from 'react-icons/ai';
 import { getToken } from 'lib/util/token';
 import axios from 'axios';

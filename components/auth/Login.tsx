@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import * as A from 'lib/styles/accountStyle';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import { MdCancel } from 'react-icons/md';
@@ -6,8 +6,6 @@ import axios from 'axios';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setSignupState } from 'lib/store/modules/user.module';
-import { useSelector } from 'react-redux';
-import { RootState } from 'lib/store/modules';
 import { setToken } from 'lib/util/token';
 
 const Login = () => {

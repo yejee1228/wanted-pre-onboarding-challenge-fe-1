@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { AiFillEdit, AiOutlineCloseCircle, AiOutlineEdit } from "react-icons/ai";
-import { useDispatch } from 'react-redux';
 import { ITodo } from 'lib/types';
 import * as T from 'lib/styles/todoStyle';
 import axios from 'axios';

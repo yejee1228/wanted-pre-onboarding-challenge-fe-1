@@ -1,6 +1,4 @@
-import { RootState } from 'lib/store/modules';
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
+import React, { useState } from 'react';
 import TodoItem from './TodoItem';
 import * as T from 'lib/styles/todoStyle';
 import axios from 'axios';
