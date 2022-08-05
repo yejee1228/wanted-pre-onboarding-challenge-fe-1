@@ -4,11 +4,11 @@
 
 - https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api api 서버를 실행 후 기능이 정상 작동합니다.
 
-- 회원가입 시 토큰이 저장되어 바로 todoApp을 사용할 수 있습니다.
+- 회원가입 시 토큰이 저장되어 바로 todo-App을 사용할 수 있습니다.
 
 - 로그아웃 시에는 로그인 페이지로 이동합니다.
 
-- TOdo 리스트에는 제목만 노출되며, 클릭 시 내용을 보고 수정할 수 있습니다.
+- Todo 리스트에는 제목만 노출되며, 클릭 시 내용을 보고 수정할 수 있습니다.
 
 - redux-persist 를 설정, 로컬스토리지를 사용하여 새로고침 시에도 store의 값이 변하지 않도록 구현하였습니다.
 
