@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useMemo, useState, useEffect } from 'react';
 import { AiFillEdit, AiOutlineCloseCircle, AiOutlineEdit } from "react-icons/ai";
 import { ITodo } from 'lib/types';
+import { useRouter } from 'next/router';
 import * as T from 'lib/styles/todoStyle';
 import axios from 'axios';
 import { getToken } from 'lib/util/token';
 
 const TodoItem = (todo: ITodo) => {
+    const router = useRouter()
     const { id, title, content } = todo
     const [editInputs, setEditInputs] = useState({
         editTitle: title,
@@ -27,7 +29,20 @@ const TodoItem = (todo: ITodo) => {
             axios.put(`http://localhost:8080/todos/${id}`, data, config),
         deleteTodo: (id: string) =>
             axios.delete(`http://localhost:8080/todos/${id}`, config),
-    };
+    }
+
+    const current = useMemo(() => {
+        return router.query.page !== undefined ? router.query.page : ''
+    }, [router.query]);
+
+    useEffect(() => {
+        console.log('effect')
+        if (current === id) {
+            setEditMode(true)
+        } else {
+            setEditMode(false)
+        }
+    }, [current]);
 
     const inputHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
@@ -36,9 +51,19 @@ const TodoItem = (todo: ITodo) => {
             [name]: value
         })
     }
+    const select = () => {
+        if (!editMode) {
+            if (current === id) {
+                setEditMode(true)
+            } else {
+                router.push(`/todo?page=${id}`)
+            }
+        } else {
+            setEditMode(false)
+        }
+    }
 
     const updateEdit = () => {
-        console.log(config)
         API.updateTodo(id)
             .then(data => {
                 if (data.data.id === todo.id) {
@@ -59,9 +84,9 @@ const TodoItem = (todo: ITodo) => {
     return (
         <>
             <T.TodoItem>
-                <span onClick={() => setEditMode(!editMode)}>{title}</span>
-                <i onClick={() => setEditMode(!editMode)}>
-                    {editMode ?
+                <span onClick={select}>{title}</span>
+                <i onClick={select}>
+                    {(current === id && editMode) ?
                         <AiFillEdit />
                         :
                         <AiOutlineEdit />
@@ -71,7 +96,7 @@ const TodoItem = (todo: ITodo) => {
                     <AiOutlineCloseCircle />
                 </i>
             </T.TodoItem >
-            {editMode &&
+            {(current === id && editMode) &&
                 <T.TodoDetail>
                     <div>
                         <p>title: </p>< input type="text" name="editTitle" value={editTitle} onChange={inputHandler} /><br />
