@@ -36,7 +36,6 @@ const TodoItem = (todo: ITodo) => {
     }, [router.query]);
 
     useEffect(() => {
-        console.log('effect')
         if (current === id) {
             setEditMode(true)
         } else {
