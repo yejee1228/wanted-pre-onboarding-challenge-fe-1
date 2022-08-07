@@ -12,8 +12,7 @@ const TodoAdd = () => {
     })
     const { title, content } = inputs
 
-    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-        console.log(e.target.name)
+    const inputHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const { value, name } = e.target
         setInputs({
             ...inputs,
@@ -43,10 +42,13 @@ const TodoAdd = () => {
     return (
         <>
             {
-                todoAdd ?
-                    <T.TodoForm onSubmit={onSubmit}>
-                        제목: < input type="text" name="title" value={title} onChange={inputHandler} /><br />
-                        내용: < input type="text" name="content" value={content} onChange={inputHandler} />
+                todoAdd
+                    ?
+                    <T.TodoForm>
+                        <div>
+                            <p>title: </p>< input type="text" name="title" value={title} onChange={inputHandler} /><br />
+                            < textarea name="content" value={content} onChange={inputHandler} />
+                        </div>
                         < button type="submit" onClick={onSubmit} > <span>입력</span> </button >
                     </T.TodoForm >
                     :

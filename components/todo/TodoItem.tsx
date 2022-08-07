@@ -29,7 +29,7 @@ const TodoItem = (todo: ITodo) => {
             axios.delete(`http://localhost:8080/todos/${id}`, config),
     };
 
-    const inputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
         setEditInputs({
             ...editInputs,
@@ -74,11 +74,11 @@ const TodoItem = (todo: ITodo) => {
             {editMode &&
                 <T.TodoDetail>
                     <div>
-                        <input type="text" name="editTitle" value={editTitle} onChange={inputHandler} /><br />
-                        <input type="text" name="editContent" value={editContent} onChange={inputHandler} />
+                        <p>title: </p>< input type="text" name="editTitle" value={editTitle} onChange={inputHandler} /><br />
+                        < textarea name="editContent" value={editContent} onChange={inputHandler} />
                     </div>
-                    <button onClick={updateEdit}>수정</button>
-                </T.TodoDetail>
+                    < button type="submit" onClick={updateEdit} > <span>입력</span> </button >
+                </T.TodoDetail >
             }
         </>
     );

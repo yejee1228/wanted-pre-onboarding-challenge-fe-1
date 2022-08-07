@@ -52,17 +52,35 @@ padding: 20px;
 margin-bottom: 40px;
 border: 1px solid #999;
 border-radius: 6px;
+display: flex;
+flex-direction: column;
+    p{
+        float: left;
+        height: 48px;
+        padding: 12px 0;
+    }
     input {
-        width: 75%;
+        width: 90%;
         height: 48px;
         padding: 15px 12px;
+        margin-bottom: 15px;
         border: solid 1px #ababab;
         border-radius: 6px;
+        float: right;
+    }
+    textarea{
+        width: 100%;
+        height: 100px;
+        padding: 15px 12px;
+        margin-bottom: 15px;
+        border: solid 1px #ababab;
+        border-radius: 6px;
+        resize: none;
     }
     button {
         width: 20%;
         height: 48px;
-        margin-left: 20px;
+        margin: 0 auto;
         padding: 9px 13px 8px 12px;
         border: none;
         border-radius: 6px;
@@ -128,29 +146,8 @@ i{
     }
 }
 `
-export const TodoDetail = styled.div`
+export const TodoDetail = styled(TodoForm)`
 width: auto;
-height: 100px;
 border: 1px solid #f96726;
-border-radius: 6px;
 margin-bottom: 10px;
-display:flex;
-input{
-    width: 90%;
-    height: calc(50% - 20px);
-    margin: 10px 5px;
-    padding: 5px;
-    border: 1px solid #878787;
-    border-radius: 6px;
-    display: inline-flex;
-}
-button{
-    height: calc(100% - 20px);
-    margin: 10px 5px;
-    border: none;
-    border-radius: 6px;
-    background-color: #f96726;
-    color: #fff;
-    font-size: 15px;
-}
 `
