@@ -1,10 +1,9 @@
-import { delToken, getToken } from 'lib/util/token';
+import { delToken } from 'lib/util/token';
 import { useRouter } from 'next/router';
 import * as T from 'lib/styles/todoStyle';
 
 const Header = () => {
     const router = useRouter()
-    const token = getToken()
 
     const logout = () => {
         delToken()

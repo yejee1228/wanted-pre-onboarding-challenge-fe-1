@@ -1,10 +1,18 @@
-import Todo from "./todo"
+import { Auth, Todo } from "components";
+import { getToken } from "lib/util/token";
 
 const Index = () => {
+  const token = getToken()
 
   return (
     <>
-      <Todo />
+      {
+        token
+          ?
+          <Todo />
+          :
+          <Auth />
+      }
     </>
   );
 };
