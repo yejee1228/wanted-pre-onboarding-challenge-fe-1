@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import TodoItem from './TodoItem';
 import * as T from 'lib/styles/todoStyle';
 import axios from 'axios';

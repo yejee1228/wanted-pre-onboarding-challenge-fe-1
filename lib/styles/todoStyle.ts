@@ -111,19 +111,6 @@ border-radius: 6px;
 &:last-child{
     margin-bottom: 0px;
 }
-input[type="checkbox"]{
-    width: 15px;
-    height: 15px;
-    display: inline-flex;
-}
-input[type="text"]{
-    width: 80%;
-    height: 25px;
-    padding: 0 5px;
-    margin: 0 10px;
-    border: solid 1px #ababab;
-    border-radius: 6px;
-}
 span{
     width: 350px;
     height: 24px;
@@ -134,15 +121,8 @@ span{
     display: inline-block;
     overflow: hidden;
     white-space: nowrap;
-}
-i{
-    font-size: 15px;
-    right: 32px;
-    position: absolute;
-    color: #f96726;
-    display: inline-flex;
     &:last-child{
-        right: 10px;
+        width: 200px;
     }
 }
 `
@@ -150,4 +130,24 @@ export const TodoDetail = styled(TodoForm)`
 width: auto;
 border: 1px solid #f96726;
 margin-bottom: 10px;
+    div{
+        h3{
+            font-size: 20px;
+            font-weignt: bold;
+            border-bottom: 1px solid #ececec;
+            padding: 10px;
+        }
+        div{
+            text-align: left;
+            padding: 10px;
+            height: 133px;
+            overflow: auto;
+        }
+    }
+`
+export const ButtonBox = styled.div`
+text-align: center;
+    button{
+        margin: 0 20px
+    }
 `

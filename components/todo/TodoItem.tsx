@@ -1,108 +1,53 @@
 import React, { useMemo, useState, useEffect } from 'react';
-import { AiFillEdit, AiOutlineCloseCircle, AiOutlineEdit } from "react-icons/ai";
 import { ITodo } from 'lib/types';
 import { useRouter } from 'next/router';
 import * as T from 'lib/styles/todoStyle';
-import axios from 'axios';
-import { getToken } from 'lib/util/token';
+import TodoDetail from './TodoDetail';
 
 const TodoItem = (todo: ITodo) => {
     const router = useRouter()
-    const { id, title, content } = todo
-    const [editInputs, setEditInputs] = useState({
-        editTitle: title,
-        editContent: content
-    })
-    const { editTitle, editContent } = editInputs
-    const [editMode, setEditMode] = useState(false);
-    const config: object = {
-        headers: {
-            Authorization: getToken()
-        }
-    }
-    const data = {
-        title: editTitle,
-        content: editContent
-    }
-    const API = {
-        updateTodo: (id: string) =>
-            axios.put(`http://localhost:8080/todos/${id}`, data, config),
-        deleteTodo: (id: string) =>
-            axios.delete(`http://localhost:8080/todos/${id}`, config),
-    }
+    const { id, title, content, createdAt, updatedAt } = todo
+    const [isOpen, setIsOpen] = useState(false)
 
-    const current = useMemo(() => {
+    const currentPage = useMemo(() => {
         return router.query.page !== undefined ? router.query.page : ''
     }, [router.query]);
 
     useEffect(() => {
-        if (current === id) {
-            setEditMode(true)
+        if (currentPage === id) {
+            setIsOpen(true)
         } else {
-            setEditMode(false)
+            setIsOpen(false)
         }
-    }, [current]);
+    }, [currentPage, id]);
 
-    const inputHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
-        const { name, value } = e.target
-        setEditInputs({
-            ...editInputs,
-            [name]: value
-        })
-    }
     const select = () => {
-        if (!editMode) {
-            if (current === id) {
-                setEditMode(true)
-            } else {
-                router.push(`/todo?page=${id}`)
-            }
+        if (isOpen) {
+            setIsOpen(false)
         } else {
-            setEditMode(false)
+            setIsOpen(true)
+            router.push(`/todo?page=${id}`)
         }
     }
 
-    const updateEdit = () => {
-        API.updateTodo(id)
-            .then(data => {
-                if (data.data.id === todo.id) {
-                    setEditMode(false)
-                }
-            })
-    }
-
-    const remove = () => {
-        API.deleteTodo(id)
-            .then(data => {
-                if (data.data === null) {
-                    setEditMode(false)
-                }
-            })
+    const formatDate = (dateString: string, delimiter = '-') => {
+        const date = new Date(dateString)
+        const year = date.getFullYear()
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        return [year, month, day].join(delimiter)
     }
 
     return (
         <>
-            <T.TodoItem>
-                <span onClick={select}>{title}</span>
-                <i onClick={select}>
-                    {(current === id && editMode) ?
-                        <AiFillEdit />
-                        :
-                        <AiOutlineEdit />
-                    }
-                </i>
-                <i onClick={remove}>
-                    <AiOutlineCloseCircle />
-                </i>
-            </T.TodoItem >
-            {(current === id && editMode) &&
-                <T.TodoDetail>
-                    <div>
-                        <p>title: </p>< input type="text" name="editTitle" value={editTitle} onChange={inputHandler} /><br />
-                        < textarea name="editContent" value={editContent} onChange={inputHandler} />
-                    </div>
-                    < button type="submit" onClick={updateEdit} > <span>입력</span> </button >
-                </T.TodoDetail >
+            {todo.id !== '' &&
+                <T.TodoItem>
+                    <span onClick={select}>{title}</span>
+                    <span>등록일: {formatDate(createdAt)}</span>
+                </T.TodoItem >
+            }
+            {isOpen &&
+                <TodoDetail key={id} id={id} title={title} content={content} createdAt={createdAt} updatedAt={updatedAt} />
             }
         </>
     );

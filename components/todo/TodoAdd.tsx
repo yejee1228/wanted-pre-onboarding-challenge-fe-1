@@ -44,7 +44,7 @@ const TodoAdd = () => {
             {
                 todoAdd
                     ?
-                    <T.TodoForm>
+                    <T.TodoForm onSubmit={onSubmit}>
                         <div>
                             <p>title: </p>< input type="text" name="title" value={title} onChange={inputHandler} /><br />
                             < textarea name="content" value={content} onChange={inputHandler} />
