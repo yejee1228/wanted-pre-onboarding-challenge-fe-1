@@ -8,7 +8,6 @@ export type MainAction =
 export interface UserMainState {
     user: {
         email: string,
-        memberName: string,
         password: string,
     },
     signupState: boolean
@@ -21,7 +20,6 @@ export const setSignupState = (signupState: UserMainState['signupState']) => ({ 
 const initialState: UserMainState = {
     user: {
         email: '',
-        memberName: '',
         password: '',
     },
     signupState: false
@@ -37,8 +35,6 @@ const reducer = (state: UserMainState = initialState, action: MainAction) => {
             return {
                 ...state, signupState: action.payload
             }
-
-
         default: return state
     }
 }

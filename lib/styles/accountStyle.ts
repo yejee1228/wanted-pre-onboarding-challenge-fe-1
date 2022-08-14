@@ -66,12 +66,13 @@ export const InputBox = styled.div`
 position: relative;
 margin: 0 0 8px;
 `
-export const Input = styled.input`
+export const Input = styled.input<{ error: boolean }>`
 width: 100%;
 height: 48px;
 padding: 15px 12px;
 border-radius: 6px;
-border: solid 1px #ababab;
+border: ${({ error }) => error ? 'solid 1px #ff0000' : 'solid 1px #ababab'};
+background-color: ${({ error }) => error ? '#ffe2e2' : 'none'};
 `
 export const InputIcon = styled.div`
 width: 18px;

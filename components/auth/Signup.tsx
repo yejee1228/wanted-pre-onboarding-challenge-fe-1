@@ -26,16 +26,13 @@ const Index = () => {
     const [emailError, setEmailError] = useState('')
     const [passWordError, setPassWordError] = useState('')
     const inputRef = useRef<HTMLInputElement>(null)
-    const errorStyle = { border: 'solid 1px #ff0000', backgroundColor: '#ffe2e2' }
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target
-
         setInputs({
             ...inputs,
             [name]: value,
         })
-
     }
 
     useEffect(() => {
@@ -48,7 +45,6 @@ const Index = () => {
         } else {
             setEmailError('')
         }
-
         if (password !== '' && password.length < 8) {
             setPassWordError('8자리 이상 입력해주세요.')
         } else if (passwordCheck !== '' && password !== passwordCheck) {
@@ -56,8 +52,6 @@ const Index = () => {
         } else {
             setPassWordError('')
         }
-
-
     }, [email, memberName, password, passwordCheck])
 
     const changePwType = (type: string) => {
@@ -65,11 +59,10 @@ const Index = () => {
             passWordType === 'password' ? setPassWordType('text') : setPassWordType('password')
         } else {
             passwordCheckType === 'password' ? setPasswordCheckType('text') : setPasswordCheckType('password')
-
         }
     }
 
-    const signup = () => {
+    const signupValidate = () => {
         if (email == '') {
             setEmailError('이메일을 입력해주세요.')
             return
@@ -80,6 +73,12 @@ const Index = () => {
             setPassWordError('비밀번호를 한번 더 입력해주세요.')
             return
         } else {
+            return true
+        }
+    }
+
+    const signup = () => {
+        if (signupValidate()) {
             axios.post(`http://localhost:8080/users/create`, inputs)
                 .then((data) => {
                     if (!data.data) {
@@ -109,11 +108,11 @@ const Index = () => {
                 <A.SignupWrap>
                     <A.SignSubWrap>
                         <A.InputBox>
-                            <A.Input type='email' name='email' value={email} placeholder='이메일 주소' onChange={handleInput} ref={inputRef} style={emailError !== '' ? errorStyle : {}} />
+                            <A.Input type='email' name='email' value={email} placeholder='이메일 주소' onChange={handleInput} ref={inputRef} error={emailError !== ''} />
                             {emailError !== '' && <A.AlertText alertType='error'>{emailError}</A.AlertText>}
                         </A.InputBox>
                         <A.InputBox>
-                            <A.Input type={passWordType} name='password' value={password} placeholder='비밀번호' onChange={handleInput} style={passWordError !== '' ? errorStyle : {}} maxLength={12} />
+                            <A.Input type={passWordType} name='password' value={password} placeholder='비밀번호' onChange={handleInput} error={passWordError !== ''} maxLength={12} />
                             {
                                 passWordType === 'password'
                                     ? <A.InputIcon onClick={() => changePwType('password')}> <AiFillEyeInvisible /> </A.InputIcon>
@@ -121,7 +120,7 @@ const Index = () => {
                             }
                         </A.InputBox>
                         <A.InputBox>
-                            <A.Input type={passwordCheckType} name='passwordCheck' value={passwordCheck} placeholder='비밀번호 확인' onChange={handleInput} style={passWordError !== '' ? errorStyle : {}} maxLength={12} />
+                            <A.Input type={passwordCheckType} name='passwordCheck' value={passwordCheck} placeholder='비밀번호 확인' onChange={handleInput} error={passWordError !== ''} maxLength={12} />
                             {
                                 passwordCheckType === 'password'
                                     ? <A.InputIcon onClick={() => changePwType('passwordCheck')}> <AiFillEyeInvisible /> </A.InputIcon>

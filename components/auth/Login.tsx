@@ -21,22 +21,19 @@ const Login = () => {
     const [passWordError, setPassWordError] = useState('')
     const [loginError, setLoginError] = useState('')
     const inputRef = useRef<HTMLInputElement>(null)
-    const errorStyle = { border: 'solid 1px #ff0000', backgroundColor: '#ffe2e2' }
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target
-
         setInputs({
             ...inputs,
             [name]: value
         })
-
     }
     const changePwType = () => {
         passWordType === 'password' ? setPassWordType('text') : setPassWordType('password')
-
     }
-    const doLogin = async () => {
+
+    const loginValidate = () => {
         setEmailError('')
         setPassWordError('')
         if (email == '') {
@@ -45,42 +42,47 @@ const Login = () => {
         } else if (email.indexOf('@') <= -1) {
             setEmailError('@를 포함한 이메일 주소를 입력해주세요.')
             return;
-        }
-        if (password == '') {
+        } else if (password == '') {
             setPassWordError('비밀번호를 입력해주세요.')
             return;
+        } else {
+            return true;
         }
+    }
 
-        axios.post(`http://localhost:8080/users/login`, inputs)
-            .then((data) => {
-                if (!data.data) {
-                    setLoginError('로그인에 실패하였습니다.')
+    const doLogin = async () => {
+        if (loginValidate()) {
+            axios.post(`http://localhost:8080/users/login`, inputs)
+                .then((data) => {
+                    if (!data.data) {
+                        setLoginError('로그인에 실패하였습니다.')
+                        return
+                    } else {
+                        alert(data.data.message)
+                        setLoginError('')
+                        setPassWordError('')
+                        setEmailError('')
+                        setToken(data.data.token)
+                        router.push('/')
+                        return
+                    }
+                })
+                .catch(() => {
                     return
-                } else {
-                    alert(data.data.message)
-                    setLoginError('')
-                    setPassWordError('')
-                    setEmailError('')
-                    setToken(data.data.token)
-                    router.push('/')
-                    return
-                }
-            })
-            .catch(() => {
-                return
-            })
+                })
+        }
     }
 
     return (
         <A.LoginWrap>
             <A.LoginContent>
                 <A.InputBox>
-                    <A.Input type='email' name='email' value={email} placeholder='이메일 주소' onChange={handleInput} ref={inputRef} style={emailError !== '' ? errorStyle : {}} />
+                    <A.Input type='email' name='email' value={email} placeholder='이메일 주소' onChange={handleInput} ref={inputRef} error={emailError !== ''} />
                     <A.InputIcon onClick={() => setInputs({ ...inputs, email: '' })}><MdCancel /></A.InputIcon>
                 </A.InputBox>
                 {emailError !== '' && <A.Error>{emailError}</A.Error>}
                 <A.InputBox>
-                    <A.Input type={passWordType} name='password' value={password} placeholder='비밀번호' onChange={handleInput} style={passWordError !== '' ? errorStyle : {}} />
+                    <A.Input type={passWordType} name='password' value={password} placeholder='비밀번호' onChange={handleInput} error={passWordError !== ''} />
                     {
                         passWordType === 'password'
                             ? <A.InputIcon onClick={changePwType}><AiFillEyeInvisible /></A.InputIcon>

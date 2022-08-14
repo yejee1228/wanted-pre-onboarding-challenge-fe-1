@@ -9,25 +9,28 @@ const TodoItem = (todo: ITodo) => {
     const { id, title, content, createdAt, updatedAt } = todo
     const [isOpen, setIsOpen] = useState(false)
 
-    const currentPage = useMemo(() => {
+    const currentPageId = useMemo(() => {
         return router.query.page !== undefined ? router.query.page : ''
     }, [router.query]);
 
     useEffect(() => {
-        if (currentPage === id) {
+        if (currentPageId === id) {
             setIsOpen(true)
         } else {
             setIsOpen(false)
         }
-    }, [currentPage, id]);
+    }, [currentPageId, id]);
 
-    const select = () => {
+    const toggleDetail = () => {
         if (isOpen) {
             setIsOpen(false)
         } else {
             setIsOpen(true)
-            router.push(`/todo?page=${id}`)
+            goPage()
         }
+    }
+    const goPage = () => {
+        router.push(`/todo?page=${id}`)
     }
 
     const formatDate = (dateString: string, delimiter = '-') => {
@@ -42,7 +45,7 @@ const TodoItem = (todo: ITodo) => {
         <>
             {todo.id !== '' &&
                 <T.TodoItem>
-                    <span onClick={select}>{title}</span>
+                    <span onClick={toggleDetail}>{title}</span>
                     <span>등록일: {formatDate(createdAt)}</span>
                 </T.TodoItem >
             }
