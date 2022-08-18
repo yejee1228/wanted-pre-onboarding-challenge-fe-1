@@ -21,7 +21,7 @@ const TodoItem = (todo: ITodo) => {
         }
     }, [currentPageId, id]);
 
-    const toggleDetail = () => {
+    const openDetail = () => {
         if (isOpen) {
             setIsOpen(false)
         } else {
@@ -45,7 +45,7 @@ const TodoItem = (todo: ITodo) => {
         <>
             {todo.id !== '' &&
                 <T.TodoItem>
-                    <span onClick={toggleDetail}>{title}</span>
+                    <span onClick={openDetail}>{title}</span>
                     <span>등록일: {formatDate(createdAt)}</span>
                 </T.TodoItem >
             }
