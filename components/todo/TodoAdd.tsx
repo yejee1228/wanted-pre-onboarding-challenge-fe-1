@@ -49,7 +49,10 @@ const TodoAdd = () => {
                             <p>title: </p>< input type="text" name="title" value={title} onChange={inputHandler} /><br />
                             < textarea name="content" value={content} onChange={inputHandler} />
                         </div>
-                        < button type="submit" onClick={onSubmit} > <span>입력</span> </button >
+                        <div>
+                            < button type="submit" onClick={onSubmit} disabled={(title === '' || content === '')}> <span>입력</span> </button >
+                            < button onClick={() => setTodoAdd(false)} > <span>취소</span> </button >
+                        </div>
                     </T.TodoForm >
                     :
                     <T.TodoAddButton onClick={() => setTodoAdd(true)}><AiOutlinePlus />추가하기</T.TodoAddButton>

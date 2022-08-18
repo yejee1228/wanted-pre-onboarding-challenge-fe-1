@@ -77,10 +77,13 @@ flex-direction: column;
         border-radius: 6px;
         resize: none;
     }
+    div{
+        text-align: center;
+    }
     button {
         width: 20%;
         height: 48px;
-        margin: 0 auto;
+        margin: 0 20px;
         padding: 9px 13px 8px 12px;
         border: none;
         border-radius: 6px;
@@ -143,11 +146,5 @@ margin-bottom: 10px;
             height: 133px;
             overflow: auto;
         }
-    }
-`
-export const ButtonBox = styled.div`
-text-align: center;
-    button{
-        margin: 0 20px
     }
 `

@@ -41,7 +41,7 @@ const TodoDetail = (todo: ITodo) => {
         setIsEditMode(!isEditMode)
     }
 
-    const updateEdit = (e: React.MouseEvent<HTMLButtonElement>) => {
+    const updateEdit = (e: React.FormEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         API.updateTodo(id)
             .then(data => {
@@ -70,16 +70,16 @@ const TodoDetail = (todo: ITodo) => {
                     {
                         isEditMode
                             ?
-                            <>
+                            <form onSubmit={updateEdit}>
                                 <div>
                                     <p>title: </p>< input type="text" name="editTitle" value={editTitle} onChange={inputHandler} /><br />
                                     < textarea name="editContent" value={editContent} onChange={inputHandler} />
                                 </div>
-                                <T.ButtonBox>
-                                    < button onClick={updateEdit} > <span>완료</span> </button >
+                                <div>
+                                    < button type="submit" onSubmit={updateEdit} disabled={(editTitle === '' || editContent === '')}> <span>완료</span> </button >
                                     < button onClick={toggleEditMode}> <span>취소</span> </button >
-                                </T.ButtonBox>
-                            </>
+                                </div>
+                            </form>
                             :
                             <>
                                 <div>
@@ -88,10 +88,10 @@ const TodoDetail = (todo: ITodo) => {
                                         {content}
                                     </div>
                                 </div>
-                                <T.ButtonBox>
+                                <div>
                                     < button onClick={toggleEditMode} > <span>수정</span> </button >
                                     < button onClick={removeTodo}> <span>삭제</span> </button >
-                                </T.ButtonBox>
+                                </div>
                             </>
                     }
                 </T.TodoDetail >
