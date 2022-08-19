@@ -1,10 +1,9 @@
 const getToken = () => {
-  const token = localStorage.getItem("token")
-
-  if (token) {
+  const token = typeof window !== 'undefined' ? localStorage.getItem("token") : ''
+  if (token !== null) {
     return token
   } else {
-    return null
+    return ''
   }
 };
 
