@@ -7,8 +7,8 @@ const Header = () => {
 
     const logout = () => {
         delToken()
-        alert('로그아웃 되었습니다.')
         router.push('/auth')
+        alert('로그아웃 되었습니다.')
     }
 
     return (
