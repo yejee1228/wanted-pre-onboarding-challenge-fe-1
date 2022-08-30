@@ -1,11 +1,12 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import * as A from 'lib/styles/accountStyle';
 import { AiFillEyeInvisible, AiFillEye } from 'react-icons/ai';
 import { MdCancel } from 'react-icons/md';
-import axios from 'axios';
+import { AxiosError } from 'axios';
 import { useRouter } from 'next/router';
 import { useDispatch } from 'react-redux';
 import { setSignupState } from 'lib/store/modules/user.module';
+import { useLogin } from './queries';
 import { setToken } from 'lib/util/token';
 
 const Login = () => {
@@ -21,6 +22,7 @@ const Login = () => {
     const [passWordError, setPassWordError] = useState('')
     const [loginError, setLoginError] = useState('')
     const inputRef = useRef<HTMLInputElement>(null)
+    const { mutateAsync } = useLogin()
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target
@@ -52,29 +54,37 @@ const Login = () => {
 
     const doLogin = async () => {
         if (loginValidate()) {
-            axios.post(`http://localhost:8080/users/login`, inputs)
+            mutateAsync(inputs)
                 .then((data) => {
-                    if (!data.data) {
+                    if (!data) {
                         setLoginError('로그인에 실패하였습니다.')
                         return
                     } else {
-                        alert(data.data.message)
+                        alert(data.message)
                         setLoginError('')
                         setPassWordError('')
                         setEmailError('')
-                        setToken(data.data.token)
-                        router.push('/')
+                        setToken(data.token)
+                        router.push('/todo')
                         return
                     }
                 })
-                .catch(() => {
+                .catch((error) => {
+                    const err = error as AxiosError
+                    console.log(err)
                     return
                 })
         }
     }
+    useEffect(() => {
+        router.prefetch('/')
+    }, [])
 
     return (
         <A.LoginWrap>
+            <A.Title>
+                To-do List
+            </A.Title>
             <A.LoginContent>
                 <A.InputBox>
                     <A.Input type='email' name='email' value={email} placeholder='이메일 주소' onChange={handleInput} ref={inputRef} error={emailError !== ''} />
@@ -114,4 +124,5 @@ const Login = () => {
         </A.LoginWrap>
     );
 };
+
 export default Login;

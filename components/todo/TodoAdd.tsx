@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import * as T from 'lib/styles/todoStyle'
 import { AiOutlinePlus } from 'react-icons/ai';
-import { getToken } from 'lib/util/token';
-import axios from 'axios';
+import { useCreateTodo } from './queries';
 
 const TodoAdd = () => {
     const [todoAdd, setTodoAdd] = useState(false)
@@ -11,6 +10,7 @@ const TodoAdd = () => {
         content: '',
     })
     const { title, content } = inputs
+    const { mutateAsync } = useCreateTodo()
 
     const inputHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const { value, name } = e.target
@@ -22,22 +22,8 @@ const TodoAdd = () => {
 
     const onSubmit = (e: React.FormEvent<HTMLFormElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
-        const config: object = {
-            headers: {
-                Authorization: getToken()
-            }
-        }
-        const data = { title: inputs.title, content: inputs.content }
-        axios.post(`http://localhost:8080/todos`, data, config)
-            .then(data => {
-                if (data.data.data) {
-                    setTodoAdd(false)
-                    setInputs({
-                        title: '',
-                        content: '',
-                    })
-                }
-            })
+        mutateAsync(inputs)
+        setInputs({ title: '', content: '' })
     }
     return (
         <>

@@ -1,33 +1,22 @@
 import React, { useState } from 'react';
 import * as T from 'lib/styles/todoStyle'
-import { getToken } from 'lib/util/token';
-import axios from 'axios';
 import { ITodo } from 'lib/types';
+import { useDeleteTodo, useUpdateTodo } from './queries';
 
 const TodoDetail = (todo: ITodo) => {
-    const { id, title, content } = todo
+    const { title, content } = todo
     const [editInputs, setEditInputs] = useState({
         editTitle: title,
         editContent: content
     })
     const { editTitle, editContent } = editInputs
-    const [isEditMode, setIsEditMode] = useState(false);
-
-    const config: object = {
-        headers: {
-            Authorization: getToken()
-        }
-    }
+    const [isEditMode, setIsEditMode] = useState(false)
     const data = {
         title: editTitle,
         content: editContent
     }
-    const API = {
-        updateTodo: (id: string) =>
-            axios.put(`http://localhost:8080/todos/${id}`, data, config),
-        deleteTodo: (id: string) =>
-            axios.delete(`http://localhost:8080/todos/${id}`, config),
-    }
+    const { mutateAsync } = useUpdateTodo(todo.id)
+    const deleteId = useDeleteTodo(todo.id)
 
     const inputHandler = (e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLTextAreaElement>) => {
         const { name, value } = e.target
@@ -41,11 +30,11 @@ const TodoDetail = (todo: ITodo) => {
         setIsEditMode(!isEditMode)
     }
 
-    const updateEdit = (e: React.FormEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = (e: React.FormEvent<HTMLButtonElement> | React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        API.updateTodo(id)
-            .then(data => {
-                if (data.data.data.id === todo.id) {
+        mutateAsync(data)
+            .then(res => {
+                if (res.data.id === todo.id) {
                     setIsEditMode(false)
                 }
             })
@@ -53,9 +42,9 @@ const TodoDetail = (todo: ITodo) => {
     const removeTodo = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault()
         if (confirm('삭제하시겠습니까?')) {
-            API.deleteTodo(id)
-                .then(data => {
-                    if (data.data === null) {
+            deleteId.mutateAsync()
+                .then(res => {
+                    if (res.data === null) {
                         setIsEditMode(false)
                     }
                 })
@@ -66,20 +55,20 @@ const TodoDetail = (todo: ITodo) => {
     return (
         <>
             {todo.id !== '' &&
-                <T.TodoDetail>
+                <T.TodoDetail onSubmit={onSubmit}>
                     {
                         isEditMode
                             ?
-                            <form onSubmit={updateEdit}>
+                            <>
                                 <div>
                                     <p>title: </p>< input type="text" name="editTitle" value={editTitle} onChange={inputHandler} /><br />
                                     < textarea name="editContent" value={editContent} onChange={inputHandler} />
                                 </div>
                                 <div>
-                                    < button type="submit" onSubmit={updateEdit} disabled={(editTitle === '' || editContent === '')}> <span>완료</span> </button >
+                                    < button type="submit" onSubmit={onSubmit} disabled={(editTitle === '' || editContent === '')}> <span>완료</span> </button >
                                     < button onClick={toggleEditMode}> <span>취소</span> </button >
                                 </div>
-                            </form>
+                            </>
                             :
                             <>
                                 <div>

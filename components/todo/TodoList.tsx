@@ -1,34 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import TodoItem from './TodoItem';
 import * as T from 'lib/styles/todoStyle';
-import axios from 'axios';
+import { useTodos } from './queries';
 import { getToken } from 'lib/util/token';
 
 const TodoList = () => {
-    const [todos, setTodos] = useState([
-        {
-            title: '',
-            content: '',
-            id: '',
-            createdAt: '',
-            updatedAt: ''
-        }
-    ])
-    const config: object = {
-        headers: {
-            Authorization: getToken()
-        }
-    }
-    axios.get(`http://localhost:8080/todos`, config)
-        .then(res => {
-            setTodos(res.data.data)
-        })
+    const { data: todos } = useTodos(getToken())
+
     return (
         <T.TodoList>
             <ul>
                 {
-                    todos.length > 0 &&
-                    todos.map((todo) => <TodoItem key={todo.id} id={todo.id} title={todo.title} content={todo.content} createdAt={todo.createdAt} updatedAt={todo.updatedAt} />)
+                    (todos !== undefined && todos?.data.length > 0) &&
+                    todos?.data.map((todo) => <TodoItem key={todo.id} id={todo.id} title={todo.title} content={todo.content} createdAt={todo.createdAt} updatedAt={todo.updatedAt} />)
                 }
             </ul>
         </T.TodoList>

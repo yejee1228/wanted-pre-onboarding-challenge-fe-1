@@ -6,8 +6,8 @@ import { setSignupState, setUser } from 'lib/store/modules/user.module';
 import * as regExp from 'lib/util/regExp';
 import { useRouter } from 'next/router';
 import { MdOutlineCancel } from 'react-icons/md';
-import axios from 'axios';
 import { setToken } from 'lib/util/token';
+import { useSignup } from './queries';
 
 const Index = () => {
     const router = useRouter()
@@ -26,6 +26,7 @@ const Index = () => {
     const [emailError, setEmailError] = useState('')
     const [passWordError, setPassWordError] = useState('')
     const inputRef = useRef<HTMLInputElement>(null)
+    const { mutateAsync } = useSignup()
 
     const handleInput = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { value, name } = e.target
@@ -79,16 +80,16 @@ const Index = () => {
 
     const signup = () => {
         if (signupValidate()) {
-            axios.post(`http://localhost:8080/users/create`, inputs)
+            mutateAsync(inputs)
                 .then((data) => {
-                    if (!data.data) {
+                    if (!data) {
                         alert('회원가입에 실패했습니다. 다시 시도해주세요.')
                         return
                     } else {
-                        alert(data.data.message)
+                        alert(data.message)
                         setPassWordError('')
                         setEmailError('')
-                        setToken(data.data.token)
+                        setToken(data.token)
                         dispatch(setUser(inputs))
                         setState(false)
                         router.push('/')
