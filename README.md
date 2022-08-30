@@ -1,5 +1,6 @@
 ## About
 
+
 - yarn dev 명령어로 실행 후 http://localhost:3000 를 통해 접속 할 수 있습니다.
 
 - https://github.com/starkoora/wanted-pre-onboarding-challenge-fe-1-api api 서버를 실행 후 기능이 정상 작동합니다.
